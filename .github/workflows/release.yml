@@ -46,7 +46,7 @@ jobs:
 
     - name: Pack
       run: |
-        cd ./out/sd
+        cd ./SdOut
         sudo zip -r ./ldn_mitm_${{ env.RELEASE_VERSION }}.zip atmosphere switch
     
     - name: Create Release
@@ -67,6 +67,6 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./out/sd/ldn_mitm_${{ env.RELEASE_VERSION }}.zip
+        asset_path: ./SdOut/ldn_mitm_${{ env.RELEASE_VERSION }}.zip
         asset_name: ldn_mitm_${{ env.RELEASE_VERSION }}.zip
         asset_content_type: application/zip
