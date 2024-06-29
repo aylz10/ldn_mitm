@@ -32,6 +32,9 @@ jobs:
           git reset --hard origin/master
           popd
       
+      - name: Add safe.directory
+        run: git config --global --add safe.directory "*"
+
       - name: Build
         id: build
         run: make -j8 PREFIX="ccache aarch64-none-elf-"
