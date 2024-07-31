@@ -1,6 +1,9 @@
 name: Build
 
-on: [push, workflow_dispatch]
+# on: [push, workflow_dispatch]
+
+on:
+  workflow_dispatch: # 手动触发工作流程
 
 jobs:
   build:
@@ -20,6 +23,9 @@ jobs:
 
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2
+
+      - name: Add safe.directory
+        run: git config --global --add safe.directory "*"
 
       - name: Build
         id: build
@@ -41,17 +47,6 @@ jobs:
       - name: Upload built files
         uses: actions/upload-artifact@v3
         with:
-          name: sdcard
-          path: out/sd
+          name: ldn
+          path: SdOut
 
-      - name: Upload elf file
-        uses: actions/upload-artifact@v3
-        with:
-          name: ldn_mitm.elf
-          path: ldn_mitm/ldn_mitm.elf
-
-      - name: Upload elf file
-        uses: actions/upload-artifact@v3
-        with:
-          name: ldn_mitm.elf
-          path: overlay/overlay.elf
