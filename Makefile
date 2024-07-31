@@ -1,5 +1,5 @@
 APP_TITLE = ldn_mitm
-APP_VERSION = v1.16.0
+APP_VERSION = v1.17.0
 ifeq ($(RELEASE),)
 	APP_VERSION	:=	$(APP_VERSION)-$(shell git describe --always)
 endif
