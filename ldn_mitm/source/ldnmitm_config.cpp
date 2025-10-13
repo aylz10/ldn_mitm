@@ -3,7 +3,7 @@
 #include "debug.hpp"
 
 namespace ams::mitm::ldn {
-    std::atomic_bool LdnConfig::LdnEnabled = true;
+    std::atomic_bool LdnConfig::LdnEnabled = false;
 
     Result LdnConfig::GetVersion(sf::Out<LdnMitmVersion> version) {
         std::strcpy(version.GetPointer()->raw, GITDESCVER);
