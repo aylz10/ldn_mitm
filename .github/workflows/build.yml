@@ -1,0 +1,52 @@
+name: Build
+
+# on: [push, workflow_dispatch]
+
+on:
+  workflow_dispatch: # 手动触发工作流程
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    container:
+      image: devkitpro/devkita64:latest
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+
+      - name: Setup ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+
+      - name: Add safe.directory
+        run: git config --global --add safe.directory "*"
+
+      - name: Build
+        id: build
+        run: make -j8 PREFIX="ccache aarch64-none-elf-"
+        continue-on-error: true
+
+      - name: Install libnx master & Retry build
+        id: retry
+        if: ${{ steps.build.outcome == 'failure' }}
+        run: |
+          pushd /tmp
+          git clone https://github.com/switchbrew/libnx
+          cd libnx
+          make -j8 PREFIX="ccache aarch64-none-elf-"
+          make install
+          popd
+          make -j8 PREFIX="ccache aarch64-none-elf-"
+
+      - name: Upload built files
+        uses: actions/upload-artifact@v3
+        with:
+          name: ldn
+          path: SdOut
+
